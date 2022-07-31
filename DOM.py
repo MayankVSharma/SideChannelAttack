@@ -58,6 +58,187 @@ def invsbox(inp):
 def intermediate(pt, keyguess):
     return sbox(pt ^ keyguess)
 
+def keystategenerate(key):
+    k=[]
+    for i in range(4):
+        k.append([])
+        for j in range(4):
+            k[i].append(key[(j*4)+i])
+    return k
+def getrotword(k):
+    r=[k[i][-1] for i in range(4)]
+    last=r[0]
+    for i in range(3):
+        r[i]=sbox(r[i+1])
+    r[3]=sbox(last)
+    return r
+
+def printkey(k):
+    for i in range(4):
+        for j in range(4):
+            print(hex(k[i][j]),end=' ')
+        print()
+
+def subkey_1(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    print(key)
+    keystate = keystategenerate(key)        
+    rotword = getrotword(keystate)
+    subkey1=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey1[0][0]=keystate[0][0]^rotword[0]^rcon[0]
+    for i in range(1,4):
+        subkey1[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey1[j][i]=keystate[j][i]^subkey1[j][i-1]
+    return subkey1
+
+def subkey_2(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_1(key)        
+    rotword = getrotword(keystate)
+    subkey2=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey2[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey2[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey2[j][i]=keystate[j][i]^subkey2[j][i-1]
+    return subkey2
+
+def subkey_3(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_2(key)        
+    rotword = getrotword(keystate)
+    subkey3=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey3[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey3[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey3[j][i]=keystate[j][i]^subkey3[j][i-1]
+    return subkey3
+
+def subkey_4(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_3(key)        
+    rotword = getrotword(keystate)
+    subkey4=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey4[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey4[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey4[j][i]=keystate[j][i]^subkey4[j][i-1]
+    return subkey4
+
+def subkey_5(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_4(key)        
+    rotword = getrotword(keystate)
+    subkey5=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey5[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey5[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey5[j][i]=keystate[j][i]^subkey5[j][i-1]
+    return subkey5
+
+def subkey_6(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_5(key)        
+    rotword = getrotword(keystate)
+    subkey6=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey6[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey6[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey6[j][i]=keystate[j][i]^subkey6[j][i-1]
+    return subkey6
+
+def subkey_7(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_6(key)        
+    rotword = getrotword(keystate)
+    subkey7=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey7[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey7[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey7[j][i]=keystate[j][i]^subkey7[j][i-1]
+    return subkey7
+
+def subkey_8(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_7(key)        
+    rotword = getrotword(keystate)
+    subkey8=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey8[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey8[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey8[j][i]=keystate[j][i]^subkey8[j][i-1]
+    return subkey8
+
+def subkey_9(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_8(key)        
+    rotword = getrotword(keystate)
+    subkey9=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey9[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey9[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey9[j][i]=keystate[j][i]^subkey9[j][i-1]
+    return subkey9
+
+def subkey_10(key):
+    rcon = [0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36]
+    
+    #print(key)
+    keystate = subkey_9(key)        
+    rotword = getrotword(keystate)
+    subkey10=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+    #print([hex(i) for i in rotword])
+    subkey10[0][0]=keystate[0][0]^rotword[0]^rcon[1]
+    for i in range(1,4):
+        subkey10[i][0]=keystate[i][0]^rotword[i]^0x0
+    for i in range(1,4):
+        for j in range(4):
+            subkey10[j][i]=keystate[j][i]^subkey10[j][i-1]
+    return subkey10
+
 HW = [bin(n).count("1") for n in range(0, 256)]
 
 #opening files
@@ -91,4 +272,6 @@ for subkey in range(16):
     key_guess.append(guess)
 print(key_guess)
 print("guess: ", [hex(x)[2:] for x in key_guess])
-#print("actual: ", [hex(x)[2:] for x in known_keys[0]])
+key10=subkey_10(key_guess)
+print('\n10 th round key is :-')
+printkey(key10)
